@@ -1,3 +1,55 @@
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.querySelector('form');
+  const errorBanner = document.querySelector('.error-banner');
+  const successBanner = document.querySelector('.success-banner');
+
+  form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Reset previous error messages and hide banners
+      errorBanner.style.display = 'none';
+      successBanner.style.display = 'none';
+      errorBanner.textContent = '';
+
+      try {
+          // Validate form fields
+          const name = form.querySelector('#Name').value.trim();
+          const email = form.querySelector('#Email-1').value.trim();
+          const message = form.querySelector('#Message').value.trim();
+
+          if (!name || !email || !message) {
+              throw new Error('All fields are required');
+          }
+
+          // Validate email format
+          if (!isValidEmail(email)) {
+              throw new Error('Invalid email format');
+          }
+
+          // Additional validation checks can be added as needed
+
+          // Display success banner upon successful validation
+          successBanner.textContent = 'Form submitted successfully!';
+          successBanner.style.display = 'block';
+
+      } catch (error) {
+          // Handle errors and display in the error banner
+          console.error(error);
+
+          // Display errors in the error banner
+          errorBanner.textContent = error.message;
+          errorBanner.style.display = 'block';
+      }
+  });
+
+  // Function to validate email format
+  function isValidEmail(email) {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      return emailRegex.test(email);
+  }
+});
+
+
 // HEADER ANIMATION
 window.onscroll = function() {scrollFunction()};
 var element = document.getElementById("body");
@@ -80,3 +132,5 @@ AOS.init({
       $('#navbarSupportedContent').removeClass('show');
     }
   }
+
+  
