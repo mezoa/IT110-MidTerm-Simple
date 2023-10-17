@@ -1,53 +1,67 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.querySelector('form');
-  const errorBanner = document.querySelector('.error-banner');
-  const successBanner = document.querySelector('.success-banner');
+// Add event listener for the contact form
+document.getElementById("contactForm").addEventListener("submit", function (e) {
+  e.preventDefault(); // Prevent the default form submission behavior
 
-  form.addEventListener('submit', function (e) {
-      e.preventDefault();
+  try {
+    // Validate the contact form data
+    const name = document.getElementById("Name").value.trim();
+    const email = document.getElementById("Email-1").value.trim();
+    const message = document.getElementById("Message").value.trim();
 
-      // Reset previous error messages and hide banners
-      errorBanner.style.display = 'none';
-      successBanner.style.display = 'none';
-      errorBanner.textContent = '';
+    if (!name || !email || !message) {
+      throw new Error("Please fill in all fields.");
+    }
 
-      try {
-          // Validate form fields
-          const name = form.querySelector('#Name').value.trim();
-          const email = form.querySelector('#Email-1').value.trim();
-          const message = form.querySelector('#Message').value.trim();
+    if (!isValidEmail(email)) {
+      throw new Error("Invalid email address.");
+    }
 
-          if (!name || !email || !message) {
-              throw new Error('All fields are required');
-          }
-
-          // Validate email format
-          if (!isValidEmail(email)) {
-              throw new Error('Invalid email format');
-          }
-
-          // Additional validation checks can be added as needed
-
-          // Display success banner upon successful validation
-          successBanner.textContent = 'Form submitted successfully!';
-          successBanner.style.display = 'block';
-
-      } catch (error) {
-          // Handle errors and display in the error banner
-          console.error(error);
-
-          // Display errors in the error banner
-          errorBanner.textContent = error.message;
-          errorBanner.style.display = 'block';
-      }
-  });
-
-  // Function to validate email format
-  function isValidEmail(email) {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      return emailRegex.test(email);
+    // If the data is valid, display a success message for the contact form
+    const successBanner = document.querySelector(".success-banner");
+    successBanner.style.display = "block";
+    successBanner.textContent = "Form submitted successfully!";
+    // You can reset the contact form here if needed
+  } catch (error) {
+    // If there's an error, display an error message for the contact form
+    const errorBanner = document.querySelector(".error-banner");
+    errorBanner.style.display = "block";
+    errorBanner.textContent = error.message;
+  } finally {
+    // You can clean up or reset contact form elements here if needed
   }
 });
+
+document.getElementById("subscribeForm").addEventListener("submit", function (e) {
+  e.preventDefault(); // Prevent the default form submission behavior
+
+  try {
+    // Validate the email for the subscribe form
+    const email = document.getElementById("EmailSubscribe").value.trim();
+
+    if (!isValidEmail(email)) {
+      throw new Error("Invalid email address.");
+    }
+
+    // If the email is valid, display a success message for the subscribe form
+    const successBanner = document.querySelector(".success-banner-subscribe");
+    successBanner.style.display = "block";
+    successBanner.textContent = "You've subscribed successfully!";
+    // You can reset the subscribe form here if needed
+  } catch (error) {
+    // If there's an error, display an error message for the subscribe form
+    const errorBanner = document.querySelector(".error-banner-subscribe");
+    errorBanner.style.display = "block";
+    errorBanner.textContent = error.message;
+  } finally {
+    // You can clean up or reset subscribe form elements here if needed
+  }
+});
+
+function isValidEmail(email) {
+  // You can implement a more robust email validation function here
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
 
 
 // HEADER ANIMATION
